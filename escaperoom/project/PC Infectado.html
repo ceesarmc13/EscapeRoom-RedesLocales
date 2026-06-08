@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SISTEMA COMPROMETIDO</title>
+<!--
+  ============================================================================
+  ESCAPE ROOM CIBERSEGURIDAD — FASE 2: WEB DEL PC INFECTADO
+  Archivo único, funciona offline. Sin dependencias externas.
+  ----------------------------------------------------------------------------
+  CÓDIGOS (hardcodeados): K3RN3L-P4N1C / R00T-4CC355 / 3XF1LTR4T3D
+  CREDENCIALES SSH: editar el objeto SSH_CONFIG en PC Infectado.js (buscar "SSH_CONFIG").
+  RESET para organizadores: menú de inicio (botón rojo) -> "REINICIAR ESCAPE",
+  o pulsar la combinación Ctrl + Alt + R.
+  ============================================================================
+-->
+<link rel="stylesheet" href="PC Infectado.css">
+</head>
+<body>
+
+<!-- ===================== DESKTOP ===================== -->
+<div id="desktop" data-screen-label="Escritorio infectado">
+  <canvas id="rain"></canvas>
+  <div class="wp-corrupt"></div>
+  <div class="wp-skull">
+    <div class="big">!</div>
+    <div class="sub">SYSTEM LOCKED</div>
+  </div>
+
+  <!-- desktop icons -->
+  <div id="icons">
+    <div class="icon" id="file-1" data-code="K3RN3L-P4N1C" data-name="documento_personal.pdf" data-ext="pdf" data-size="2,4 MB">
+      <div class="glyph">
+        <div class="doc"><span class="ext pdf">PDF</span></div>
+        <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      </div>
+      <div class="label">documento_personal.pdf</div>
+    </div>
+
+    <div class="icon" id="file-2" data-code="R00T-4CC355" data-name="proyecto_trabajo.xlsx" data-ext="xls" data-size="187 KB">
+      <div class="glyph">
+        <div class="doc"><span class="ext xls">XLS</span></div>
+        <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      </div>
+      <div class="label">proyecto_trabajo.xlsx</div>
+    </div>
+
+    <div class="icon" id="file-3" data-code="3XF1LTR4T3D" data-name="fotos_familia.zip" data-ext="zip" data-size="14,8 MB">
+      <div class="glyph">
+        <div class="doc"><span class="ext zip">ZIP</span></div>
+        <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      </div>
+      <div class="label">fotos_familia.zip</div>
+    </div>
+
+    <!-- ransom note icon (always visible, informational) -->
+    <div class="icon" id="readme">
+      <div class="glyph">
+        <div class="doc" style="background:#1a0000;border-color:var(--red)"><span class="ext txt" style="color:#ff8080">!</span></div>
+      </div>
+      <div class="label" style="color:#ff9b9b">LEEME_RESCATE.txt</div>
+    </div>
+
+    <!-- DECRYPTOR APP icon -->
+    <div class="icon" id="decryptor-icon">
+      <div class="glyph">
+        <div class="doc" style="background:#0a140c;border-color:var(--green-dim)"><span class="ext" style="color:var(--green)">EXE</span></div>
+      </div>
+      <div class="label" style="color:var(--green)">DESCIFRADOR.exe</div>
+    </div>
+
+    <!-- attacker file (appears at climax) -->
+    <div class="icon attacker" id="attacker-icon">
+      <div class="glyph">
+        <div class="doc"><span class="ext txt" style="color:var(--red-bright)">.skd</span></div>
+        <div class="lock" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="#1a0000" stroke="#1a0000" stroke-width="2"><circle cx="9" cy="10" r="2"/><circle cx="15" cy="10" r="2"/></svg></div>
+      </div>
+      <div class="label" style="color:var(--red-bright)">README_DEL_ATACANTE.txt</div>
+    </div>
+  </div>
+
+  <!-- ransom HUD panel -->
+  <div id="ransom">
+    <div class="ransom-bar"><span class="dot"></span> SH4D0W-CRYPT // RANSOMWARE v3.7</div>
+    <div class="ransom-body">
+      <h1>HE CIFRADO TUS ARCHIVOS</h1>
+      <p>Todo lo que había en este equipo — documentos, hojas de cálculo y fotos — está cifrado con <b>AES-256</b>. Para recuperarlo necesitas las <b>3 claves</b> que partí y escondí en tu aula.</p>
+      <p style="color:#ff9b9b">Cada clave se consigue superando una de las pruebas de la sala. Introdúcelas en mi herramienta DESCIFRADOR.exe del escritorio. Nada se descifra hasta tener las 3.</p>
+      <div class="timer-wrap">
+        <div class="timer-lbl">LOS ARCHIVOS SE DESTRUIRÁN EN</div>
+        <div class="timer" id="timer">47:00</div>
+      </div>
+      <div class="progress-line">
+        <span>CLAVES:</span>
+        <div class="pills"><div class="pill" data-p="1"></div><div class="pill" data-p="2"></div><div class="pill" data-p="3"></div></div>
+        <span id="progress-txt">0 / 3 DESCIFRADAS</span>
+      </div>
+      <div class="ransom-note">No apagues el equipo. No intentes formatear. Cada manipulación del sistema acelera la destrucción de tus datos. — SH4D0W</div>
+    </div>
+  </div>
+
+  <!-- overlays -->
+  <div class="scanlines"></div>
+  <div class="crt-flicker"></div>
+  <div class="vignette"></div>
+
+  <!-- taskbar -->
+  <div id="taskbar">
+    <div id="startbtn"><span class="sgly"><span></span><span></span><span></span><span></span></span> SISTEMA</div>
+    <div class="tasks" id="tasks">
+      <div class="task-chip alarm">SH4D0W-CRYPT.exe</div>
+    </div>
+    <div id="tray">
+      <span class="warn">▲ AMENAZA ACTIVA</span>
+      <div id="clock"><div class="t">00:00</div><div class="d">--/--/----</div></div>
+    </div>
+  </div>
+
+  <!-- start menu -->
+  <div id="startmenu">
+    <div class="sm-head">SH4D0W-CRYPT // MENÚ</div>
+    <div class="sm-item" id="sm-help">Ayuda <small>F1</small></div>
+    <div class="sm-item" id="sm-decrypt">Abrir DESCIFRADOR.exe</div>
+    <div class="sm-item" id="sm-readme">Leer nota de rescate</div>
+    <div class="sm-item" id="sm-mute">Silenciar sonido <small id="mute-state">ON</small></div>
+    <div class="sm-item danger" id="sm-reset">REINICIAR ESCAPE <small>organizador</small></div>
+  </div>
+</div>
+
+<!-- intro -->
+<div id="intro">
+  <div class="intro-mask" aria-hidden="true">
+    <div class="layer base"></div>
+    <div class="layer glitch"></div>
+    <div class="scan"></div>
+  </div>
+  <div class="intro-content">
+    <div class="it" id="intro-text"></div>
+    <div class="enc-bar" id="enc-bar"><i></i></div>
+    <button class="enter" id="enter-btn">&gt; ACEPTAR EL RETO</button>
+  </div>
+  <div class="skip" id="skip-intro">[ ESC ] SALTAR INTRO</div>
+</div>
+
+<!-- climax blackout -->
+<div id="blackout"><div class="center" id="blackout-center"></div></div>
+
+<!-- effects -->
+<div id="alertflash"></div>
+
+<script src="PC Infectado.js"></script>
+</body>
+</html>
