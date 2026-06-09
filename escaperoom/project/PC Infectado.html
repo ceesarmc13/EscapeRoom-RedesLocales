@@ -9,10 +9,10 @@
   ESCAPE ROOM CIBERSEGURIDAD — FASE 2: WEB DEL PC INFECTADO
   Archivo único, funciona offline. Sin dependencias externas.
   ----------------------------------------------------------------------------
-  CÓDIGOS (hardcodeados): K3RN3L-P4N1C / R00T-4CC355 / 3XF1LTR4T3D
-  CREDENCIALES SSH: editar el objeto SSH_CONFIG en PC Infectado.js (buscar "SSH_CONFIG").
-  RESET para organizadores: menú de inicio (botón rojo) -> "REINICIAR ESCAPE",
-  o pulsar la combinación Ctrl + Alt + R.
+  CÓDIGOS: B1n4ry / 05unaBeib1 / Fr4gm3ntat1on / C0nn3ct3d
+  CREDENCIALES SSH: editar SSH_CONFIG en PC Infectado.js
+  RESET para organizadores: menú de inicio -> "REINICIAR ESCAPE"
+  o pulsar Ctrl + Alt + R.
   ============================================================================
 -->
 <link rel="stylesheet" href="PC Infectado.css">
@@ -30,28 +30,36 @@
 
   <!-- desktop icons -->
   <div id="icons">
-    <div class="icon" id="file-1" data-code="K3RN3L-P4N1C" data-name="documento_personal.pdf" data-ext="pdf" data-size="2,4 MB">
-      <div class="glyph">
-        <div class="doc"><span class="ext pdf">PDF</span></div>
-        <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
-      </div>
-      <div class="label">documento_personal.pdf</div>
-    </div>
-
-    <div class="icon" id="file-2" data-code="R00T-4CC355" data-name="proyecto_trabajo.xlsx" data-ext="xls" data-size="187 KB">
+    <div class="icon" id="file-1" data-code="B1n4ry" data-name="transferencias_banco.xlsx" data-ext="xls" data-size="94 KB">
       <div class="glyph">
         <div class="doc"><span class="ext xls">XLS</span></div>
         <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
       </div>
-      <div class="label">proyecto_trabajo.xlsx</div>
+      <div class="label">transferencias_banco.xlsx</div>
     </div>
 
-    <div class="icon" id="file-3" data-code="3XF1LTR4T3D" data-name="fotos_familia.zip" data-ext="zip" data-size="14,8 MB">
+    <div class="icon" id="file-2" data-code="05unaBeib1" data-name="fotos_familia" data-ext="folder" data-size="">
       <div class="glyph">
-        <div class="doc"><span class="ext zip">ZIP</span></div>
+        <div class="folder-ico"></div>
         <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
       </div>
-      <div class="label">fotos_familia.zip</div>
+      <div class="label">fotos_familia</div>
+    </div>
+
+    <div class="icon" id="file-3" data-code="Fr4gm3ntat1on" data-name="psswrds.txt" data-ext="txt" data-size="1 KB">
+      <div class="glyph">
+        <div class="doc"><span class="ext txt">TXT</span></div>
+        <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      </div>
+      <div class="label">psswrds.txt</div>
+    </div>
+
+    <div class="icon" id="file-4" data-code="C0nn3ct3d" data-name="presentación biología.pptx" data-ext="pptx" data-size="3,2 MB">
+      <div class="glyph">
+        <div class="doc"><span class="ext pptx">PPTX</span></div>
+        <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#1a0000" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" fill="#1a0000"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      </div>
+      <div class="label">presentación biología.pptx</div>
     </div>
 
     <!-- ransom note icon (always visible, informational) -->
@@ -85,16 +93,21 @@
     <div class="ransom-bar"><span class="dot"></span> SH4D0W-CRYPT // RANSOMWARE v3.7</div>
     <div class="ransom-body">
       <h1>HE CIFRADO TUS ARCHIVOS</h1>
-      <p>Todo lo que había en este equipo — documentos, hojas de cálculo y fotos — está cifrado con <b>AES-256</b>. Para recuperarlo necesitas las <b>3 claves</b> que partí y escondí en tu aula.</p>
-      <p style="color:#ff9b9b">Cada clave se consigue superando una de las pruebas de la sala. Introdúcelas en mi herramienta DESCIFRADOR.exe del escritorio. Nada se descifra hasta tener las 3.</p>
+      <p>Todo lo que había en este equipo — hojas de cálculo, carpetas de fotos, documentos y presentaciones — está cifrado con <b>AES-256</b>. Para recuperarlo necesitas las <b>4 claves</b> que partí y escondí en tu aula.</p>
+      <p style="color:#ff9b9b">Cada clave se consigue superando una de las pruebas de la sala. Introdúcelas en mi herramienta DESCIFRADOR.exe del escritorio. Nada se descifra hasta tener las 4.</p>
       <div class="timer-wrap">
         <div class="timer-lbl">LOS ARCHIVOS SE DESTRUIRÁN EN</div>
         <div class="timer" id="timer">47:00</div>
       </div>
       <div class="progress-line">
         <span>CLAVES:</span>
-        <div class="pills"><div class="pill" data-p="1"></div><div class="pill" data-p="2"></div><div class="pill" data-p="3"></div></div>
-        <span id="progress-txt">0 / 3 DESCIFRADAS</span>
+        <div class="pills">
+          <div class="pill" data-p="1"></div>
+          <div class="pill" data-p="2"></div>
+          <div class="pill" data-p="3"></div>
+          <div class="pill" data-p="4"></div>
+        </div>
+        <span id="progress-txt">0 / 4 DESCIFRADAS</span>
       </div>
       <div class="ransom-note">No apagues el equipo. No intentes formatear. Cada manipulación del sistema acelera la destrucción de tus datos. — SH4D0W</div>
     </div>
