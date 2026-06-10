@@ -360,5 +360,19 @@ button,input{font-family:var(--mono)}
 .xls tr.suspicious td{background:#1a0505;color:#ff9090}
 .xls tr.suspicious td.num{color:#ff7070}
 
+/* ===================== VICTORY SEQUENCE ===================== */
+.victory-win{width:min(580px,92vw)}
+.victory-win .win-bar,.vic-bar{background:#001a06;border-color:var(--green)}
+.vic-bar .wt{color:var(--green)}
+.vbar-row{margin:3px 0 3px 4px;font-size:12px;color:var(--green);font-family:var(--mono)}
+.vbar-row .vfill{display:inline-block;width:0;height:10px;max-width:160px;overflow:hidden;white-space:nowrap;vertical-align:middle;background:repeating-linear-gradient(90deg,var(--green) 0 8px,var(--green-dim) 8px 12px)}
+.vbar-row .vpct{display:inline-block;width:38px;text-align:right}
+.vbanner{margin:20px 0 4px;padding:4px 0}
+.vline{color:var(--green-dim);font-size:11px;letter-spacing:.02em;line-height:1.4;word-break:break-all}
+.vline::before{content:"████████████████████████████████████████████████"}
+.vtitle{color:var(--green);font-size:22px;font-weight:bold;letter-spacing:.14em;text-align:center;padding:16px 0 7px;text-shadow:0 0 16px rgba(0,255,65,.65),0 0 36px rgba(0,255,65,.25)}
+.vsub{color:#7de8a0;font-size:13px;text-align:center;padding:3px 0;letter-spacing:.05em}
+.vsub2{color:#4ac070;font-size:12px;text-align:center;padding:2px 0 10px;letter-spacing:.04em}
+
 .hidden{display:none!important}
 ::selection{background:var(--red);color:#fff}

@@ -68,6 +68,11 @@ function sndClimax(){
   seq.forEach((fr,i)=>setTimeout(()=>tone(fr,.35,"sawtooth",.07),i*180));
   setTimeout(()=>{ tone(120,1.4,"sine",.09,60); },seq.length*180+200);
 }
+function sndVictory(){
+  if(!actx||state.muted) return;
+  [330,415,494,659,830].forEach((fr,i)=>setTimeout(()=>tone(fr,.18,"square",.06),i*110));
+  setTimeout(()=>{ tone(880,.7,"square",.08); tone(1108,.6,"square",.05); },650);
+}
 
 /* =================================================================
    MATRIX RAIN
@@ -592,53 +597,89 @@ function triggerClimax(instant){
   setTimeout(()=>{
     if(rainRAF) cancelAnimationFrame(rainRAF);
     const bo = $("#blackout"); bo.classList.add("show");
-    setTimeout(typeAttackerNote, 1300);
+    setTimeout(typeVictorySequence, 1300);
   }, delay);
 }
 function pops_count(){ return $$(".popup").length; }
 
-function typeAttackerNote(){
-  const center = $("#blackout-center");
-  center.innerHTML = `<div class="cmask" aria-hidden="true"><div class="layer base"></div><div class="scan"></div></div>
-    <div class="win attacker-win" style="position:static">
-    <div class="win-bar"><span class="wt">root@victima:~ — README_DEL_ATACANTE.txt</span></div>
-    <div class="term" id="atk-term"></div>
-  </div>`;
-  const term = $("#atk-term");
-  const lines = [
-    {c:"gl", t:"$ cat README_DEL_ATACANTE.txt\n"},
-    {c:"rd", t:"[!] este archivo no debería estar aquí\n\n"},
-    {c:"am", t:"# deploy_shadow.sh — registro del operador\n"},
-    {c:"am", t:"# TODO: BORRAR ESTE ARCHIVO ANTES DE SALIR\n\n"},
-    {c:"", t:"Acceso al panel de control del ataque:\n\n"},
-    {c:"rd", t:"=== CREDENCIALES SSH (equipo del atacante) ===\n"},
-    {c:"CRED", t:""},
-    {c:"gl", t:"\n$ ssh "+SSH_CONFIG.user+"@"+SSH_CONFIG.ip+"\n\n"},
-    {c:"", t:"El atacante olvidó eliminar este registro.\n"},
-    {c:"", t:"Contiene las credenciales de su propio servidor.\n"},
-    {c:"am", t:"Úsalas para acceder a su equipo. (Fase 3)\n"},
-    {c:"rd", t:"                                  — SH4D0W\n"},
-    {c:"CUR", t:""}
+function typeVictorySequence(){
+  const center=$("#blackout-center");
+  center.innerHTML=`
+    <div class="win victory-win" style="position:static">
+      <div class="win-bar vic-bar"><span class="wt">root@sistema:~ — CONTRAATAQUE ACTIVADO</span></div>
+      <div class="term" id="vic-term"></div>
+    </div>`;
+  const term=$("#vic-term");
+  const ip=SSH_CONFIG.ip;
+  const steps=[
+    ["l","gl","> INICIANDO CONTRAATAQUE...\n",35],
+    ["l","am","> Localizando origen de la intrusión...\n",28],
+    ["p",500],
+    ["l","","  ✓ Origen detectado: "+ip+"\n\n",18],
+    ["l","am","> Revocando claves de cifrado AES-256...\n",28],
+    ["b"],
+    ["l","","  ✓ Cifrado eliminado.\n\n",18],
+    ["l","am","> Restaurando archivos (4/4)...\n",28],
+    ["b"],
+    ["l","","  ✓ transferencias_banco.xlsx  ✓ fotos_familia\n",15],
+    ["l","","  ✓ psswrds.txt                ✓ presentación biología.pptx\n\n",15],
+    ["l","am","> Cerrando puertas de acceso remoto...\n",28],
+    ["p",600],
+    ["l","","  ✓ Puerto 22 bloqueado. Acceso SSH denegado.\n\n",15],
+    ["l","rd","> EXPULSANDO INTRUSO DEL SISTEMA...\n\n",30],
+    ["p",800],
+    ["l","","  Connection to "+ip+" closed by remote host.\n",15],
+    ["l","rd","  SH4D0W ha sido desconectado.\n\n",20],
+    ["v"]
   ];
-  let li=0, ci=0;
-  function step(){
-    if(li>=lines.length) return;
-    const ln = lines[li];
-    if(ln.c==="CRED"){
-      const div=document.createElement("div"); div.className="cred";
-      div.innerHTML = `<div><span class="lbl">Usuario SSH :</span> ${SSH_CONFIG.user}</div>
-        <div><span class="lbl">Dirección IP:</span> ${SSH_CONFIG.ip}</div>
-        <div><span class="lbl">Contraseña  :</span> ${SSH_CONFIG.pass}</div>`;
-      term.appendChild(div); li++; setTimeout(step,400); return;
-    }
-    if(ln.c==="CUR"){ const cur=document.createElement("span"); cur.className="cur"; term.appendChild(cur); return; }
-    if(ci===0){ const sp=document.createElement("span"); if(ln.c) sp.className=ln.c; sp.dataset.l=li; term.appendChild(sp); }
-    const sp=term.querySelector('span[data-l="'+li+'"]');
-    if(ci<ln.t.length){ sp.textContent+=ln.t[ci]; ci++; if(ln.t[ci-1]!==" "&&Math.random()<0.3) tone(600,.02,"square",.02); setTimeout(step, ln.t==="\n"?20:(10+Math.random()*30)); }
-    else { li++; ci=0; setTimeout(step, 120); }
+  let si=0;
+  function run(){
+    if(si>=steps.length) return;
+    const s=steps[si++];
+    if(s[0]==="p"){ setTimeout(run,s[1]); }
+    else if(s[0]==="l"){ vtypeLine(term,s[1],s[2],s[3],run); }
+    else if(s[0]==="b"){ vanimateBar(term,run); }
+    else if(s[0]==="v"){ vshowVictory(term); }
   }
-  step();
-  $("#attacker-icon").classList.add("show");
+  run();
+}
+function vtypeLine(term,cls,txt,delay,cb){
+  const sp=document.createElement("span"); if(cls) sp.className=cls;
+  term.appendChild(sp);
+  let i=0;
+  function next(){
+    if(i>=txt.length){ if(cb) setTimeout(cb,60); return; }
+    sp.textContent+=txt[i++]; term.scrollTop=term.scrollHeight;
+    if(txt[i-1]!==" "&&txt[i-1]!=="\n"&&Math.random()<0.25) tone(700,.01,"square",.01);
+    setTimeout(next,txt[i-1]==="\n"?25:(delay+Math.random()*delay*.7));
+  }
+  next();
+}
+function vanimateBar(term,cb){
+  const BAR_W=160;
+  const row=document.createElement("div"); row.className="vbar-row";
+  row.innerHTML='  [<span class="vfill"></span>] <span class="vpct">  0%</span>';
+  term.appendChild(row); term.scrollTop=term.scrollHeight;
+  const fill=row.querySelector(".vfill"), pct=row.querySelector(".vpct");
+  let p=0;
+  const iv=setInterval(()=>{
+    p+=Math.random()*8+3;
+    if(p>=100){ p=100; fill.style.width=BAR_W+"px"; pct.textContent="100%";
+      clearInterval(iv); term.scrollTop=term.scrollHeight; setTimeout(cb,300); return; }
+    fill.style.width=(p/100*BAR_W)+"px"; pct.textContent=String(Math.floor(p)).padStart(3)+"%";
+    if(Math.random()<0.4) sndGlitch(); term.scrollTop=term.scrollHeight;
+  },55);
+}
+function vshowVictory(term){
+  sndVictory();
+  const div=document.createElement("div"); div.className="vbanner";
+  div.innerHTML='<div class="vline"></div>'
+    +'<div class="vtitle">SISTEMA RECUPERADO</div>'
+    +'<div class="vsub">Has expulsado a SH4D0W de la red.</div>'
+    +'<div class="vsub2">Todos tus archivos están a salvo.</div>'
+    +'<div class="vline"></div>';
+  term.appendChild(div); term.scrollTop=term.scrollHeight;
+  setTimeout(()=>{ const c=$("#rain"); if(c){ c.style.filter="hue-rotate(50deg) brightness(1.5)"; c.style.opacity="0.35"; } },900);
 }
 
 /* =================================================================
