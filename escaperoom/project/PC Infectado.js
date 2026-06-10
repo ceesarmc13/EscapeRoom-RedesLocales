@@ -273,9 +273,7 @@ function openDecryptor(){
       <div class="slots">${slots}</div>
       <div class="dec-foot">
         <div class="dec-prog">CLAVES VÁLIDAS: <span class="dec-pills"><span class="dp"></span><span class="dp"></span><span class="dp"></span><span class="dp"></span></span> <span class="dec-count">0 / 4</span></div>
-        <button class="dec-cta" disabled>DESCIFRAR TODOS LOS ARCHIVOS</button>
-        <div class="dec-globalbar"><i></i></div>
-        <div class="dec-log"></div>
+        <div class="dec-hint">Cada clave correcta descifra su archivo al instante.</div>
       </div>
     </div>`;
   const w = spawnWindow(html, "decryptor", window.innerWidth/2-270, 60);
@@ -289,12 +287,15 @@ function openDecryptor(){
       if(!val) return;
       const f = FILES.find(x=>x.id===id);
       if(val === f.code){
-        state.codes[id]=true; saveState();
+        state.codes[id]=true;
+        state.unlocked[f.id]=true;
+        saveState();
         slot.classList.add("ok"); msg.className="smsg"; msg.textContent="";
         slot.querySelector(".sstatus").textContent="CLAVE OK";
         input.disabled=true; input.value="✓ CLAVE ACEPTADA"; input.classList.remove("bad");
         btn.textContent="✓"; btn.disabled=true;
-        sndCorrect(); updateDecProgress(w);
+        sndCorrect(); markUnlocked(f.id); updateDecProgress(w);
+        if(allDone()){ setTimeout(()=>{ w.remove(); decryptorWin=null; triggerClimax(false); }, 1200); }
       }else{
         const other = FILES.find(x=>x.code===val);
         input.classList.remove("bad"); void input.offsetWidth; input.classList.add("bad"); input.value="";
@@ -306,7 +307,6 @@ function openDecryptor(){
     btn.addEventListener("click", tryValidate);
     input.addEventListener("keydown", e=>{ if(e.key==="Enter") tryValidate(); });
   });
-  w.querySelector(".dec-cta").addEventListener("click", function(){ if(this.classList.contains("ready")) decryptAll(w); });
   updateDecProgress(w);
   setTimeout(()=>{ const fi=w.querySelector('.slot:not(.ok) input'); if(fi) fi.focus(); },60);
   return w;
@@ -319,31 +319,6 @@ function updateDecProgress(w){
     d.style.borderColor = i<n ? "var(--green)" : "#5a1010";
     if(i<n) d.style.boxShadow="0 0 8px rgba(0,255,65,.6)";
   });
-  const cta = w.querySelector(".dec-cta");
-  if(n===4){ cta.classList.add("ready"); cta.disabled=false; }
-  else { cta.classList.remove("ready"); cta.disabled=true; }
-}
-function decryptAll(w){
-  const cta = w.querySelector(".dec-cta"), gbar = w.querySelector(".dec-globalbar"), gfill = gbar.querySelector("i"), logEl = w.querySelector(".dec-log");
-  cta.classList.remove("ready"); cta.disabled=true; cta.textContent="DESCIFRANDO ARCHIVOS...";
-  gbar.classList.add("show"); logEl.classList.add("show");
-  w.querySelectorAll(".slot input, .slot .sv").forEach(el=>el.disabled=true);
-  sndCorrect();
-  let p=0, done=0;
-  const iv = setInterval(()=>{
-    p += Math.random()*6+3;
-    const idx = Math.min(3, Math.floor(p/25));
-    while(done<=idx && done<4){
-      const f = FILES[done];
-      logEl.textContent += "[OK] "+f.name+" — DESCIFRADO\n";
-      state.unlocked[f.id]=true; markUnlocked(f.id); sndCorrect();
-      done++;
-    }
-    if(p>=100){ p=100; clearInterval(iv); FILES.forEach(f=>state.unlocked[f.id]=true); saveState();
-      logEl.textContent += "\n[!] Todos los archivos han sido restaurados.\n[!] Hacker expulsado del sistema.";
-      setTimeout(()=>{ w.remove(); decryptorWin=null; triggerClimax(false); }, 1100); }
-    gfill.style.width = p+"%";
-  }, 110);
 }
 function lockedNotice(id){
   const f = FILES.find(x=>x.id===id);
@@ -440,9 +415,9 @@ function drawPixelPhoto(cv, seed){
 function openPswrds(){
   const html = `
     <div class="win-bar"><span class="wt">psswrds.txt — Bloc de notas</span><span class="wx">✕</span></div>
-    <div class="win-body"><div class="txtdoc viewer">192.168.7.227@antonito67
-Sh4dowloly</div></div>`;
-  spawnWindow(html, "viewer", window.innerWidth/2-200, 120);
+    <div class="win-body"><div class="txtdoc viewer" style="font-size:16px;line-height:2.6;padding:28px 32px">${SSH_CONFIG.ip}@${SSH_CONFIG.user}
+${SSH_CONFIG.pass}</div></div>`;
+  spawnWindow(html, "viewer", window.innerWidth/2-180, 130);
 }
 
 function openPPTX(){

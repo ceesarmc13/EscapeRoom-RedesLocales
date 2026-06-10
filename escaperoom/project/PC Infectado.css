@@ -214,6 +214,7 @@ button,input{font-family:var(--mono)}
 .dec-globalbar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--green) 0 9px,var(--green-dim) 9px 14px);transition:width .1s linear}
 .dec-log{margin-top:10px;font-size:10.5px;color:var(--green);line-height:1.6;white-space:pre-wrap;display:none}
 .dec-log.show{display:block}
+.dec-hint{margin-top:10px;font-size:10.5px;color:#5a5a5a;letter-spacing:.06em;text-align:center;padding:6px 0}
 
 /* ===================== FILE CONTENT VIEWERS ===================== */
 .viewer{width:min(640px,86vw)}
